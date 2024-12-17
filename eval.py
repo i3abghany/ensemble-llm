@@ -8,7 +8,7 @@ from rep import RepetitionScorer
 CONSISTENCY_MODEL = "all-MiniLM-L6-v2"
 CONSISTENCY_MAX_LENGTH = 32768
 NLI_MODEL = "facebook/bart-large-mnli"
-REPETITION_N = 4
+NGRAM_N = 4
 
 
 class ResponseEvaluator(Scorer):
@@ -16,7 +16,7 @@ class ResponseEvaluator(Scorer):
         self.nli_scorer = ContradictionScorer(NLI_MODEL)
         self.consistency_model = SentenceTransformer(CONSISTENCY_MODEL)
         self.consistency_scorer = ConsistencyScorer(self.consistency_model, CONSISTENCY_MAX_LENGTH)
-        self.repetition_scorer = RepetitionScorer(REPETITION_N)
+        self.repetition_scorer = RepetitionScorer(NGRAM_N)
 
     def _combine_scores(self, contradiction_score, consistency_score, repetition_score):
         print("Contradiction score:", contradiction_score)
