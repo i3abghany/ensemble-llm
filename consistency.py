@@ -1,8 +1,9 @@
 import re
+from scorer import Scorer
 from sentence_transformers import SentenceTransformer, util
 
 
-class ConsistencyScorer:
+class ConsistencyScorer(Scorer):
     def __init__(self, model, max_length):
         self.model = model
         self.max_length = max_length
@@ -17,9 +18,6 @@ class ConsistencyScorer:
         for s1, s2 in zip(sentences, sentences[1:]):
             res.append(self._get_relevance(s1, s2))
         return sum(res) / len(res)
-
-    def _split_sentences(self, text):
-        return re.split(r"(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s", text)
 
     def evaluate(self, query, passage):
         sentences = self._split_sentences(passage)
