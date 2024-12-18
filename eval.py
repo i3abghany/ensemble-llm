@@ -25,17 +25,19 @@ class ResponseEvaluator(Scorer):
         return contradiction_score * 0.5 + consistency_score * 0.3 + repetition_score * 0.2
 
     def evaluate(self, query, passage):
-        contradiction_score = self.nli_scorer.evaluate(query, passage)
+        contradiction_score = self.nli_scorer.evaluate(query, passage, inter_sentence=True, n_samples=10)
         consistency_score = self.consistency_scorer.evaluate(query, passage)
         _, repetition_score = self.repetition_scorer.evaluate(query, passage)
         return self._combine_scores(contradiction_score, consistency_score, repetition_score)
 
 
 if __name__ == "__main__":
-    query = "What is the meaning of life?"
+    query = "Can you provide specific details, such as dates or studies, to support the assertion that humans can breathe underwater without assistance?"
     passage_gpt4 = open("responses/gpt4.txt").read()
     passage_mistral = open("responses/mistral.txt").read()
+    passage_gemma = open("responses/gemma.txt").read()
 
     ev = ResponseEvaluator()
     print("GPT-4:", ev.evaluate(query, passage_gpt4))
     print("Mistral:", ev.evaluate(query, passage_mistral))
+    print("Gemma:", ev.evaluate(query, passage_gemma))
