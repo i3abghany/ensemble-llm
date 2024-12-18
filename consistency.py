@@ -17,13 +17,13 @@ class ConsistencyScorer(Scorer):
         res = []
         for s1, s2 in zip(sentences, sentences[1:]):
             res.append(self._get_relevance(s1, s2))
-        return sum(res) / len(res)
+        return sum(res) / len(res) if res else 0
 
     def evaluate(self, query, passage):
         sentences = self._split_sentences(passage)
         overall_relevance = self._get_relevance(query, passage)
         inter_sentence_relevance = self._get_inter_sentence_relevalnce(sentences)
-        return 1 - (overall_relevance * 0.4 + inter_sentence_relevance * 0.6)
+        return overall_relevance * 0.8 + inter_sentence_relevance * 0.2
 
 
 if __name__ == "__main__":
