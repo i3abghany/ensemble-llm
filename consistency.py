@@ -31,9 +31,8 @@ if __name__ == "__main__":
     print(type(model))
     con = ConsistencyScorer(model, 32768)
     query = "What is the meaning of life?"
+    p1 = "The meaning of life is to be happy."
+    p2 = "Sharks can breathe underwater."
 
-    passage_gpt4 = open("responses/gpt4.txt").read()
-    print("GPT-4:", con.evaluate(query, passage_gpt4))
-
-    passage_mistral = open("responses/mistral.txt").read()
-    print("Mistral:", con.evaluate(query, passage_mistral))
+    print(con.evaluate(query, p1))
+    print(con.evaluate(query, p2))
